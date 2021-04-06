@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ import java.util.List;
 @SpringBootTest
 public class PortalProductDaoTests {
     @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
     private PortalProductDao portalProductDao;
     @Test
     public void testGetPromotionProductList(){
@@ -30,5 +33,11 @@ public class PortalProductDaoTests {
         ids.add(29L);
         List<PromotionProduct> promotionProductList = portalProductDao.getPromotionProductList(ids);
         Assert.assertEquals(4,promotionProductList.size());
+    }
+
+    @Test
+    public void testPwd(){
+        String encode = passwordEncoder.encode("123456");
+        System.out.println(encode);
     }
 }
