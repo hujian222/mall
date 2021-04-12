@@ -1,5 +1,6 @@
 package com.macro.mall.portal.domain;
 
+import com.macro.mall.model.OmsCartItem;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,4 +24,6 @@ public class OrderParam {
     private Integer payType;
     @ApiModelProperty("被选中的购物车商品ID")
     private List<Long> cartIds;
+    @ApiModelProperty("被选中的商品信息")
+    private List<OmsCartItem> cartItems;
 }

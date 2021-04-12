@@ -93,6 +93,15 @@ public class OmsCartItemServiceImpl implements OmsCartItemService {
     }
 
     @Override
+    public List<CartPromotionItem> listPromotion(List<OmsCartItem> cartItems) {
+        List<CartPromotionItem> cartPromotionItemList = new ArrayList<>();
+        if(!CollectionUtils.isEmpty(cartItems)){
+            cartPromotionItemList = promotionService.calcCartPromotion(cartItems);
+        }
+        return cartPromotionItemList;
+    }
+
+    @Override
     public int updateQuantity(Long id, Long memberId, Integer quantity) {
         OmsCartItem cartItem = new OmsCartItem();
         cartItem.setQuantity(quantity);

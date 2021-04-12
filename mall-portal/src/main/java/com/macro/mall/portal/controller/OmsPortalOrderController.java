@@ -2,6 +2,7 @@ package com.macro.mall.portal.controller;
 
 import com.macro.mall.common.api.CommonPage;
 import com.macro.mall.common.api.CommonResult;
+import com.macro.mall.model.OmsCartItem;
 import com.macro.mall.portal.domain.ConfirmOrderResult;
 import com.macro.mall.portal.domain.OmsOrderDetail;
 import com.macro.mall.portal.domain.OrderParam;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -35,7 +37,15 @@ public class OmsPortalOrderController {
         return CommonResult.success(confirmOrderResult);
     }
 
-    @ApiOperation("根据购物车信息生成订单")
+    @ApiOperation("根据商品信息生成确认单信息")
+    @RequestMapping(value = "/generateConfirmOrderByItems", method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<ConfirmOrderResult> generateConfirmOrder(@RequestBody OmsCartItem cartItem) {
+        ConfirmOrderResult confirmOrderResult = portalOrderService.generateConfirmOrderByItems(Arrays.asList(cartItem));
+        return CommonResult.success(confirmOrderResult);
+    }
+
+    @ApiOperation("根据购物车信息或者商品信息生成订单")
     @RequestMapping(value = "/generateOrder", method = RequestMethod.POST)
     @ResponseBody
     public CommonResult generateOrder(@RequestBody OrderParam orderParam) {
@@ -46,8 +56,8 @@ public class OmsPortalOrderController {
     @ApiOperation("用户支付成功的回调")
     @RequestMapping(value = "/paySuccess", method = RequestMethod.POST)
     @ResponseBody
-    public CommonResult paySuccess(@RequestParam Long orderId,@RequestParam Integer payType) {
-        Integer count = portalOrderService.paySuccess(orderId,payType);
+    public CommonResult paySuccess(@RequestParam Long orderId, @RequestParam Integer payType) {
+        Integer count = portalOrderService.paySuccess(orderId, payType);
         return CommonResult.success(count, "支付成功");
     }
 
@@ -73,9 +83,9 @@ public class OmsPortalOrderController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<CommonPage<OmsOrderDetail>> list(@RequestParam Integer status,
-                                                   @RequestParam(required = false, defaultValue = "1") Integer pageNum,
-                                                   @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
-        CommonPage<OmsOrderDetail> orderPage = portalOrderService.list(status,pageNum,pageSize);
+                                                         @RequestParam(required = false, defaultValue = "1") Integer pageNum,
+                                                         @RequestParam(required = false, defaultValue = "5") Integer pageSize) {
+        CommonPage<OmsOrderDetail> orderPage = portalOrderService.list(status, pageNum, pageSize);
         return CommonResult.success(orderPage);
     }
 
